@@ -60,5 +60,6 @@ macro_rules! solution {
 fn solutions() -> Vec<Solution> {
     vec![
         solution!(day01),
+        solution!(day02),
     ]
 }
