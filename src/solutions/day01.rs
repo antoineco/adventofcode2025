@@ -44,8 +44,24 @@ pub fn part1(rotations: &[Direction]) -> u32 {
         .count() as u32
 }
 
-pub fn part2(_: &[Direction]) -> u32 {
-    0
+pub fn part2(rotations: &[Direction]) -> u32 {
+    rotations
+        .iter()
+        .scan(INIT_POS, |pos, dir| {
+            Some(match dir {
+                Left(dist) => {
+                    let crossed_zero = (((MAX_POS - *pos) % MAX_POS) + dist) / MAX_POS;
+                    *pos = (MAX_POS - ((MAX_POS - *pos) + dist) % MAX_POS) % MAX_POS;
+                    crossed_zero
+                }
+                Right(dist) => {
+                    let crossed_zero = (*pos + dist) / MAX_POS;
+                    *pos = (*pos + dist) % MAX_POS;
+                    crossed_zero
+                }
+            })
+        })
+        .sum()
 }
 
 #[test]
@@ -64,6 +80,7 @@ fn sample_input() {
         ";
     let rotations = parse(input);
     assert_eq!(part1(&rotations), 3);
+    assert_eq!(part2(&rotations), 6);
 }
 
 #[test]
@@ -74,6 +91,7 @@ fn overflow() {
         ";
     let passw = parse(input);
     assert_eq!(part1(&passw), 1);
+    assert_eq!(part2(&passw), 3);
 }
 
 #[test]
@@ -85,4 +103,5 @@ fn no_recount_zero_dist() {
         ";
     let passw = parse(input);
     assert_eq!(part1(&passw), 1);
+    assert_eq!(part2(&passw), 1);
 }
