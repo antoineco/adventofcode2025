@@ -1,0 +1,4 @@
+[package]
+name = "aoc2025"
+edition = "2024"
+publish = false
