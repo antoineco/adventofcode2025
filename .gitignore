@@ -1,0 +1,10 @@
+# Cargo
+/target/
+/Cargo.lock
+
+# Dev tools
+/.direnv/
+
+# Advent Of Code
+/input
+/src/solutions/day0x.rs
