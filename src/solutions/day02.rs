@@ -33,8 +33,34 @@ pub fn part1(ranges: &[(u64, u64)]) -> u64 {
         .sum()
 }
 
-pub fn part2(_: &[(u64, u64)]) -> u64 {
-    0
+pub fn part2(ranges: &[(u64, u64)]) -> u64 {
+    ranges
+        .iter()
+        .map(|(first, last)| {
+            (*first..=*last)
+                .map(|id| {
+                    let id_str = id.to_string();
+                    let id_len = id_str.len();
+                    if (1..=id_len / 2).any(|pat_len| {
+                        if !id_len.is_multiple_of(pat_len) {
+                            false
+                        } else {
+                            (pat_len..id_len).step_by(pat_len).all(|pos| {
+                                id_str
+                                    .chars()
+                                    .take(pat_len)
+                                    .eq(id_str.chars().skip(pos).take(pat_len))
+                            })
+                        }
+                    }) {
+                        id
+                    } else {
+                        0
+                    }
+                })
+                .sum::<u64>()
+        })
+        .sum()
 }
 
 #[test]
@@ -46,4 +72,5 @@ fn sample_input() {
         ";
     let ranges = parse(input);
     assert_eq!(part1(&ranges), 1227775554);
+    assert_eq!(part2(&ranges), 4174379265);
 }
