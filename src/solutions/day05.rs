@@ -34,8 +34,11 @@ pub fn part1(db: &(Vec<(u64, u64)>, Vec<u64>)) -> u64 {
         .count() as u64
 }
 
-pub fn part2(_: &(Vec<(u64, u64)>, Vec<u64>)) -> u64 {
-    0
+pub fn part2(db: &(Vec<(u64, u64)>, Vec<u64>)) -> u64 {
+    let (fresh_ranges, _) = db;
+    merged_ranges(fresh_ranges)
+        .iter()
+        .fold(0, |acc, (begin, end)| acc + end + 1 - begin)
 }
 
 fn merged_ranges(rngs: &[(u64, u64)]) -> Vec<(u64, u64)> {
@@ -82,6 +85,7 @@ fn sample_input() {
         ";
     let db = parse(input);
     assert_eq!(part1(&db), 3);
+    assert_eq!(part2(&db), 14);
 }
 
 #[test]
